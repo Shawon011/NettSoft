@@ -163,7 +163,7 @@ data.forEach((item, index) => {
 // Carousel
 
 const carousel = document.querySelector(".carousel")
-const arrowBtn = document.querySelectorAll(".carousel-wrapper box-icon")
+const arrowBtn = document.querySelectorAll(".carousel-wrapper .slideBtn")
 const firstCardWidth = carousel.querySelector(".card-wrapper").offsetWidth;
 const carouselChildrens = [...carousel.children]
 
