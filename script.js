@@ -124,21 +124,21 @@ const data = [
 
 
 const cardContainer = document.querySelector(".card-container")
-// const wrapper1 = document.createElement('div');
-// wrapper1.classList.add('card-wrapper');
-// const wrapper2 = document.createElement('div');
-// wrapper2.classList.add('card-wrapper');
-// const wrapper3 = document.createElement('div');
-// wrapper3.classList.add('card-wrapper');
+const wrapper1 = document.createElement('div');
+wrapper1.classList.add('card-wrapper');
+const wrapper2 = document.createElement('div');
+wrapper2.classList.add('card-wrapper');
+const wrapper3 = document.createElement('div');
+wrapper3.classList.add('card-wrapper');
 
-// cardContainer.appendChild(wrapper1);
-// cardContainer.appendChild(wrapper2);
-// cardContainer.appendChild(wrapper3);
+cardContainer.appendChild(wrapper1);
+cardContainer.appendChild(wrapper2);
+cardContainer.appendChild(wrapper3);
+
 
 // Loop through data and append cards to appropriate wrapper
 data.forEach((item, index) => {
     const card = document.createElement('div');
-    card.classList.add("swiper-slide")
     card.innerHTML = `
       <div class="card">
         <div class="icon">
@@ -150,45 +150,104 @@ data.forEach((item, index) => {
     `;
     cardContainer.appendChild(card)
   
-    // if (index < 8) {
-    //   wrapper1.appendChild(card); // First 8 cards
-    // } else if (index < 16) {
-    //   wrapper2.appendChild(card); // Next 8 cards
-    // } else {
-    //   wrapper3.appendChild(card); // Last 8 cards
-    // }
+    if (index < 8) {
+      wrapper1.appendChild(card); // First 8 cards
+    } else if (index < 16) {
+      wrapper2.appendChild(card); // Next 8 cards
+    } else {
+      wrapper3.appendChild(card); // Last 8 cards
+    }
   });
 
 
+// Carousel
 
-  var swiper = new Swiper('.card_slider', {
-    slidesPerView: 4,
-    loop: true,
-    centerSlide: true,
-    autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    breakpoints: {
-      320: {
-        slidesPerView: 1,
-      },
-      480: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 3,
-      },
-      1200: {
-        slidesPerView: 4,
-      }
+const carousel = document.querySelector(".carousel")
+const arrowBtn = document.querySelectorAll(".carousel-wrapper box-icon")
+const firstCardWidth = carousel.querySelector(".card-wrapper").offsetWidth;
+const carouselChildrens = [...carousel.children]
+
+let isDragging = false, startX, startScrollLeft;
+
+let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth)
+carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
+  carousel.insertAdjacentHTML("afterbegin", card.outerHTML)
+})
+
+carouselChildrens.slice(0 , cardPerView).forEach(card => {
+  carousel.insertAdjacentHTML("beforeend", card.outerHTML)
+})
+
+arrowBtn.forEach(btn => {
+  btn.addEventListener('click', () => {
+    carousel.scrollLeft += btn.id === "left" ? -firstCardWidth : firstCardWidth
+  })
+})
+
+const dragStart = (e) => {
+  isDragging = true;
+  carousel.classList.add("dragging")
+  startX = e.pagex
+  startScrollLeft = carousel.scrollLeft
+}
+
+const dragging = (e)=> {
+  if(!isDragging) return;
+  carousel.scrollLeft = e.pageX 
+}
+
+const dragStop = () => {
+  isDragging = false;
+  carousel.classList.remove("dragging")
+}
+
+let infiniteScroll = () => {
+    if(carousel.scrollLeft === 0){
+      carousel.classList.add("no-transition")
+      carousel.scrollLeft = carousel.scrollWidth - (2 * carousel.offsetWidth)
+      carousel.classList.remove("no-transition")
+    }else if (Math.ceil(carousel.scrollLeft) === carousel.scrollWidth - carousel.offsetWidth){
+      carousel.classList.add("no-transition")
+      carousel.scrollLeft = carousel.offsetWidth
+      carousel.classList.remove("no-transition")
     }
-});
+}
+
+carousel.addEventListener("mousedown", dragStart)
+carousel.addEventListener("mousemove", dragging)
+document.addEventListener("mouseup", dragStop)
+carousel.addEventListener("scroll", infiniteScroll)
+
+
+
+//   var swiper = new Swiper('.card_slider', {
+//     slidesPerView: 4,
+//     loop: true,
+//     centerSlide: true,
+//     autoplay: {
+//         delay: 2500,
+//         disableOnInteraction: false,
+//     },
+//     pagination: {
+//       el: ".swiper-pagination",
+//       clickable: true,
+//     },
+//     navigation: {
+//       nextEl: ".swiper-button-next",
+//       prevEl: ".swiper-button-prev",
+//     },
+//     breakpoints: {
+//       320: {
+//         slidesPerView: 1,
+//       },
+//       480: {
+//         slidesPerView: 2,
+//       },
+//       768: {
+//         slidesPerView: 3,
+//       },
+//       1200: {
+//         slidesPerView: 4,
+//       }
+//     }
+// });

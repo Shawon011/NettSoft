@@ -72,13 +72,39 @@ header img {
 }
 
 .card {
-    height: 300px;
-    width: 310px;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    margin-bottom: 50px;
+  height: 300px;
+  width: 310px;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-bottom: 20px !important;
+  scroll-snap-align: start;
 }
+
+@media screen and (max-width: 900px) {
+  .card-wrapper {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .card {
+    width: 260px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  .card-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 680px){
+  .card-wrapper {
+    grid-template-columns: auto;
+  }
+  .card {
+    width: 400px;
+  }
+}
+
 
 .icon {
     width: 160px;
@@ -95,6 +121,23 @@ header img {
     object-fit: contain;
 }
 
+.card-container {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: 0;
+}
+
+.carousel.no-transition {
+  scroll-behavior: auto;
+}
+
+.carousel.dragging {
+  scroll-behavior: auto;
+}
+
 .card-container .name {
     margin-top: 8px;
     font-weight: 600;
@@ -109,6 +152,17 @@ header img {
 
 
 /* swiper */
+.carousel.dragging .card {
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+
+
 .swiper-slide {
     width: auto !important;
 }
