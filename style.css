@@ -68,18 +68,19 @@ header img {
 
 .card-wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
 
 .card {
-  height: 300px;
+  height: 360px;
   width: 310px;
   border-radius: 10px;
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   margin-bottom: 20px !important;
   scroll-snap-align: start;
+  position: relative;
 }
 
 @media screen and (max-width: 900px) {
@@ -151,6 +152,17 @@ header img {
     color: #222222b3;
 }
 
+
+.viewBtn {
+  position: absolute;
+  bottom: 20px;
+  margin-top: 5px;
+  background: #ff7f00;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+}
 
 /* swiper */
 .carousel.dragging .card {
